@@ -7,6 +7,7 @@ def main():
     :return:
     """
     tweets_path = "C://Users//nate//Documents//coding-challenge-master//data-gen//tweets.txt"
+    tweets_path = "/home/nate/coding-challenge/data-gen/tweets.txt"
     with open(tweets_path) as tweets_file:
         for raw_tweet_text in tweets_file:
             raw_tweet_dict = json.loads(raw_tweet_text)
