@@ -24,7 +24,7 @@ def main():
 
 
 
-    with open(output_tweet_path,mode='r') as output_file:
+    with open(output_tweet_path,mode='w') as output_file:
 
         with open(input_tweet_path,mode='r') as tweets_file:
             for raw_tweet_text in tweets_file:

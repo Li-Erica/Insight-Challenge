@@ -107,8 +107,9 @@ class hash_tag_graph:
 
     def get_mean_degree(self):
         """
+        Compute the average degree
 
-        :return:
+        :return: np.float, average graph degree
         """
 
         return np.mean(self.graph.degree())
