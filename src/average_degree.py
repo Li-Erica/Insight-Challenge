@@ -11,6 +11,12 @@ from Hash_Tag_Graph import hash_tag_graph
 
 def main():
     """
+    Main function for parsing and writing tweets.
+    This code loops through every new line of the input file, ignoring anything that doesnt
+    match the anticipated structure
+
+    the primary loop updates and calls a class called has_tage_graph.
+    It is where the graph is maintained
 
     :return:
     """
@@ -60,10 +66,7 @@ def twitter_time_2_epoch_time(s):
     """
     Convert twitter time stamp string to integer representation of seconds since epoch
 
-
-    Tue Mar 29 06:04:51 +0000 2016
-
-    :return:
+    :return: integer representing seconds since epoch
     """
     #twitter_time_list = s.split(' ')
     pattern = '%a %b %d %H:%M:%S +0000 %Y'

@@ -12,12 +12,16 @@ __author__ = 'Erica-Li'
 
 
 class hash_tag_graph:
+    """
+    hash tag graph class
+    """
 
 
     def __init__(self,window_duration=60,verbose=True):
         """
+        Initialize the class
 
-        :return:
+        :return: hash_tag_graph object
         """
         self.t_window = window_duration
         self.latest_time = 0
@@ -27,24 +31,21 @@ class hash_tag_graph:
 
     def trim(self):
         """
-        remove edges outside
+        remove edges outside time window
 
-
-        :return:
+        :return:  None
         """
 
         # identify edges outside window
-        print(self.graph.degree())
+
         min_time = self.latest_time - self.t_window
-        print(min_time)
         edges_to_trim = self.graph.es.select(time_lt=min_time)
         if self.verbose: print("Edges to trim: "+str(edges_to_trim))
 
         # remove edges outside of t_window
         self.graph.delete_edges(edges_to_trim)
 
-        # identify veritces with 0 degree to delet
-        print(self.graph.degree())
+        # identify vertices with 0 degree to delete
         vertices_to_trim = self.graph.vs.select(_degree=0)
         if self.verbose: print("Vertices to trim: "+str(vertices_to_trim._name_index))
         self.graph.delete_vertices(vertices_to_trim)
@@ -69,8 +70,9 @@ class hash_tag_graph:
             self.latest_time = max(epoch_time,self.latest_time)
 
             current_vertices = self.graph.vs._name_index
-            print('Graph name index: '+str(current_vertices))
-            print('Graph name index type: '+str(type(current_vertices)))
+            if self.verbose:
+                print('Graph name index: '+str(current_vertices))
+                print('Graph name index type: '+str(type(current_vertices)))
 
             # current vertivces will have none type when it is initilazed empty
             if current_vertices is not None:
@@ -97,11 +99,11 @@ class hash_tag_graph:
 
             self.trim()
 
-
-
         # if tweet is outside of the time window than toss it
         else:
             return
+
+        return
 
 
 
@@ -116,8 +118,9 @@ class hash_tag_graph:
 
     def draw_graph(self,path):
         """
+        Utlity for visualizing the graph.
 
-        :return:
+        :return: 0
         """
         print("Drawing HashTag Graph!")
 

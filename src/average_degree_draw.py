@@ -11,6 +11,8 @@ from Hash_Tag_Graph import hash_tag_graph
 
 def main():
     """
+    same as average degree.py but takes a third value which determines how many tweets
+     must be added before the drawing function is called again
 
     :return:
     """
