@@ -45,7 +45,7 @@ def main():
                                       epoch_time=twitter_time_2_epoch_time(raw_tweet_dict['created_at']))
 
                         # Write output to new line of outputfile
-                        output_file.write("{0:.2f}".format(htg.get_mean_degree()))
+                        output_file.write("{0:.2f}\n".format(htg.get_mean_degree()))
 
 
                 # keyError happens when raw_tweet_dict doesnt have an entities key,
