@@ -5,11 +5,22 @@ import numpy as np
 from igraph import Graph, plot
 from itertools import combinations
 import matplotlib.pyplot as plt
+import sys
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
 
 
 __author__ = 'erica-li'
 
-def main(verbose=True,draw_freq=3):
+
+def read_unicode(text, charset='utf-8'):
+    if isinstance(text, basestring):
+        if not isinstance(text, unicode):
+            text = unicode(obj, charset)
+    return text
+
+
+def main(verbose=True,draw_freq=10):
     """
 
     :return:
@@ -48,7 +59,21 @@ def main(verbose=True,draw_freq=3):
                     if draw_counter >= draw_freq:
                         print("Drawing Graph!")
                         draw_counter = 0
-                        htg.draw_graph()
+                        layout = htg.graph.layout("circle")
+
+                        htg.graph.vs["label"] = htg.graph.vs["name"]
+
+
+                        visual_style = {}
+                        visual_style["vertex_size"] = 50
+                        visual_style["edge_width"] = 10
+                        visual_style["layout"] = layout
+                        visual_style["margin"] = 100
+
+                        graph_plot = plot(htg.graph, **visual_style)
+                        graph_plot.save(fname='/home/nate/pic.jpg')
+
+
                         plt.show()
                     else:
                         draw_counter += 1
@@ -175,6 +200,7 @@ class hash_tag_graph:
 
         :return:
         """
+        print("Drawing HashTag Graph!")
         layout = self.graph.layout("circle")
         self.graph.vs["label"] = self.graph.vs["Name"]
 
@@ -183,8 +209,9 @@ class hash_tag_graph:
         visual_style["edge_width"] = 10
         visual_style["layout"] = layout
         visual_style["margin"] = 100
-        plot(self.graph, **visual_style)
-        plt.show()
+        graph_plot = plot(self.graph, **visual_style)
+        graph_plot.show()
+        graph_plot.save(fname='/home/nate/pic.jpg')
 
         return 0
 
