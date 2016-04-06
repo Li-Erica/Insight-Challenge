@@ -1,31 +1,19 @@
 import json
-from time import mktime, strptime
-from collections import deque
 import numpy as np
-from igraph import Graph, plot
-from itertools import combinations
-import matplotlib.pyplot as plt
-import sys
-reload(sys)  # Reload does the trick!
-sys.setdefaultencoding('UTF8')
+from time import mktime, strptime
+from Hash_Tag_Graph import hash_tag_graph
 
 
 __author__ = 'erica-li'
 
 
-def read_unicode(text, charset='utf-8'):
-    if isinstance(text, basestring):
-        if not isinstance(text, unicode):
-            text = unicode(obj, charset)
-    return text
-
-
-def main(verbose=True,draw_freq=10):
+def main(verbose=True,draw_freq=50):
     """
 
     :return:
     """
     draw_counter = 0
+    next_draw = draw_counter + draw_freq
     htg = hash_tag_graph()
 
 
@@ -47,34 +35,22 @@ def main(verbose=True,draw_freq=10):
                 # Only interested in hahtag sets with at least two hashtags
                 if len(hash_tags) >= 2:
 
-                    htg.add_tweet(hash_tag_tuple=hash_tags,
-                                  epoch_time=twitter_time_2_epoch_time(raw_tweet_dict['created_at']))
 
                     if verbose:
                         print("\n")
                         print("Time: "+str(raw_tweet_dict['created_at']))
                         print("Hash Tags: "+str(hash_tags))
-                        print("Mean Degree: "+str(htg.get_mean_degree()))
-
-                    if draw_counter >= draw_freq:
-                        print("Drawing Graph!")
-                        draw_counter = 0
-                        layout = htg.graph.layout("circle")
-
-                        htg.graph.vs["label"] = htg.graph.vs["name"]
 
 
-                        visual_style = {}
-                        visual_style["vertex_size"] = 50
-                        visual_style["edge_width"] = 10
-                        visual_style["layout"] = layout
-                        visual_style["margin"] = 100
-
-                        graph_plot = plot(htg.graph, **visual_style)
-                        graph_plot.save(fname='/home/nate/pic.jpg')
+                    htg.add_tweet(hash_tag_tuple=hash_tags,
+                                  epoch_time=twitter_time_2_epoch_time(raw_tweet_dict['created_at']))
 
 
-                        plt.show()
+                    if verbose: print("Mean Degree: "+str(htg.get_mean_degree()))
+
+                    if draw_counter >= next_draw:
+                        next_draw += draw_freq
+                        htg.draw_graph(path='/home/nate/Twitter_Graph_#'+str(draw_counter)+'.png')
                     else:
                         draw_counter += 1
 
@@ -110,110 +86,6 @@ def twitter_time_2_epoch_time(s):
     return  t_epoch
 
 
-
-
-class hash_tag_graph:
-
-
-    def __init__(self,window_duration=60,verbose=False):
-        """
-
-        :return:
-        """
-        self.t_window = window_duration
-        self.hashtag_deque = deque()
-        self.latest_time = 0
-        self.graph = Graph()
-        self.verbose=verbose
-
-
-    def trim(self):
-        """
-        remove edges outside
-
-
-        :return:
-        """
-
-        # identify edges outside window
-        min_time = self.latest_time - self.t_window
-        edges_to_trim = self.graph.es.select(time_gt=min_time)
-        if self.verbose: print("Edges to trim: "+str(edges_to_trim))
-
-        # remove edges outside of t_window
-        self.graph.__sub__(edges_to_trim)
-
-        # identify veritces with 0 degree to delet
-        vertices_to_trim = self.graph.vs(_degree_eq=0)
-        if self.verbose: print("Vertices to trim: "+str(vertices_to_trim))
-        self.graph.__sub__(vertices_to_trim)
-
-
-
-
-    def add_tweet(self,hash_tag_tuple,epoch_time):
-        """
-
-        Adds tweet to hash tag graph and updates graph such that it only contains tweets
-        withing window_duration of the latest in time tweet. If tweet is outside of the window_duration
-        than it is not added to the graph and nothing happens
-
-
-        :return:
-        """
-        # Check if tweet is in order, inside the window duration, or outside
-        t_diff = self.latest_time - epoch_time > self.t_window
-
-        if t_diff <= self.t_window:
-            self.latest_time = max(epoch_time,self.latest_time)
-
-            # Add hashtag to graph as vertex, if its already exists, nothing happens
-            for hash_tag in hash_tag_tuple:
-                self.graph.add_vertex(name=hash_tag)
-
-            # Add edges with associated epoch time
-            for edge in combinations(hash_tag_tuple,r=2):
-                if self.verbose: print('Adding Edge Pair:'+str(edge))
-                self.graph.add_edge(source=edge[0],target=edge[1],time=epoch_time)
-
-            #trim graph
-            self.trim()
-
-
-
-        # if tweet is outside of the time window than toss it
-        else:
-            return
-
-
-
-    def get_mean_degree(self):
-        """
-
-        :return:
-        """
-
-        return np.mean(self.graph.degree())
-
-    def draw_graph(self):
-        """
-
-        :return:
-        """
-        print("Drawing HashTag Graph!")
-        layout = self.graph.layout("circle")
-        self.graph.vs["label"] = self.graph.vs["Name"]
-
-        visual_style = {}
-        visual_style["vertex_size"] = 50
-        visual_style["edge_width"] = 10
-        visual_style["layout"] = layout
-        visual_style["margin"] = 100
-        graph_plot = plot(self.graph, **visual_style)
-        graph_plot.show()
-        graph_plot.save(fname='/home/nate/pic.jpg')
-
-        return 0
 
 
 if __name__ == "__main__":
