@@ -7,12 +7,12 @@ Erica Cunqian Li / cli12@illinois.edu
 Please see LICENSE file
 
 #Dependencies:
-Ubuntu 14.04.3 LTS (any recent version should work)\n
+Ubuntu 14.04.3 LTS (any recent version should work)
 
-Python > 2.7.6 (not tested on python 3)\n
+Python > 2.7.6 (not tested on python 3)
 
 Python modules:
-sys,json,numpy,time,igraph,itertools,matplotlib\n
+sys,json,numpy,time,igraph,itertools,matplotlib
 
 It is recomened you get the latest versions of each module (as of 4/4/2016) using pip
 
