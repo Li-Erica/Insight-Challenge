@@ -8,8 +8,10 @@ Please see LICENSE file
 
 #Dependencies:
 Ubuntu 14.04.3 LTS (any recent version should work)\n
+
 Python > 2.7.6 (not tested on python 3)\n
-Python modules:\n
+
+Python modules:
 sys,json,numpy,time,igraph,itertools,matplotlib\n
 
 It is recomened you get the latest versions of each module (as of 4/4/2016) using pip
