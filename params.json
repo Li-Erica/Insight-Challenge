@@ -1,0 +1,6 @@
+{
+  "name": "Insight-challenge",
+  "tagline": "Insight Challenge ",
+  "body": "# Insight-Challenge\r\n\r\n#Author:\r\nErica Cunqian Li / cli12@illinois.edu\r\n\r\n#License:\r\nPlease see LICENSE file\r\n\r\n#Dependencies:\r\nUbuntu 14.04.3 LTS (any recent version should work)\r\n\r\nPython > 2.7.6 (not tested on python 3)\r\n\r\nPython modules:\r\nsys,json,numpy,time,igraph,itertools,matplotlib\r\n\r\nIt is recomened you get the latest versions of each module (as of 4/4/2016) using pip\r\n\r\n#Comments:\r\nThe Hash_Tag_Graph class has a draw_graph method that will display and save a .png image. This was implemented to allow visualization of the graph and to help with debugging. draw.sh operates the same way as run.sh but will draw the graph using a Kamada & Kawai force directed layout. code was developed for and tested with ubuntu 14.04.3 LTS\r\n\r\nI used the igraph module becuase it supports a lot of graph operations. The challenge only requested the mean degree, so I could have gotten away using some lower level data structures but in a real application, we would want more than just the average degree. Igraph supports many other graph operations so I think its a good tradeoff. \r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
